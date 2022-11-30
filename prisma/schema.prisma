@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id String @id @default(uuid())
+
+  name          String
+  nickname      String
+  cpf           String
+  rg            String
+  address       Address   @relation(fields: [addressId], references: [id])
+  addressId     String
+  limit         Float?
+  type          String
+  contacts      Contact[]
+  email         String?
+  birthday      DateTime?
+  active        Boolean?  @default(true)
+  finalConsumer Boolean?  @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  postalcode String
+  street     String
+  number     String
+  complement String?
+  district   String
+  city       String
+  state      String
+  Client     Client[]
+  Store      Store[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+}
+
+model Contact {
+  id        String   @id @default(uuid())
+  type      String
+  value     String
+  Client    Client   @relation(fields: [clientId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  clientId  String
+}
+
+model Store {
+  id               String   @id @default(uuid())
+  name             String
+  nickname         String
+  cnpj             String
+  ie               String
+  address          Address  @relation(fields: [addressId], references: [id])
+  addressId        String
+  type             String
+  pisPercentage    Float?
+  cofinsPercentage Float?
+  invoiceNumber    Int
+  invoiceSerie     String
+  active           Boolean? @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now()) @updatedAt
+}
+
+model Ncm {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  Taxes       Taxes[]
+}
+
+// enum TaxNatures {
+//   SubstituicaoTributaria
+//   Isento
+//   Tributado
+// }
+
+// enum PisCofinsNatures {
+//   Aliquota0
+//   Monofasico
+//   Tributado
+//   Isento
+// }
+
+model Taxes {
+  id                       String  @id @default(uuid())
+  ncm                      Ncm     @relation(fields: [ncmId], references: [id])
+  ncmId                    String
+  taxNature                String
+  taxedPercentage          Float?
+  taxedReductionPercentage Float?
+  hasIpi                   Boolean
+  cstIpi                   String?
+  ipiPercentage            Float?
+  pisCofinsnature          String
+  fcpPercentage            Float?
+}

@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "Ncm" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Ncm_pkey" PRIMARY KEY ("id")
+);

@@ -1,0 +1,11 @@
+-- AlterTable
+ALTER TABLE "Address" ALTER COLUMN "complement" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Client" ALTER COLUMN "limit" DROP NOT NULL,
+ALTER COLUMN "email" DROP NOT NULL,
+ALTER COLUMN "birthday" DROP NOT NULL,
+ALTER COLUMN "active" DROP NOT NULL,
+ALTER COLUMN "active" SET DEFAULT true,
+ALTER COLUMN "finalConsumer" DROP NOT NULL,
+ALTER COLUMN "finalConsumer" SET DEFAULT true;

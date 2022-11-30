@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Taxes" ALTER COLUMN "cstIpi" SET DATA TYPE TEXT;
