@@ -40,6 +40,7 @@ export async function ConnectionMiddleware(
           });
           await res.locals.prisma.$connect();
         }
+        next();
       } else {
         res.locals.prisma = new PrismaClient();
         res.send({
@@ -47,7 +48,6 @@ export async function ConnectionMiddleware(
           message: 'Token inexistente',
         });
       }
-      next();
     }
   } catch (err) {
     res.send({
