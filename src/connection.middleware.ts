@@ -12,44 +12,46 @@ export async function ConnectionMiddleware(
   res: Response,
   next: NextFunction,
 ) {
-  let passouPeloElse = false;
+  const url = req.originalUrl;
   try {
-    const token = req.headers.authorization;
-    if (token) {
-      const tokenWithoutBearer = token
-        .replace('Bearer', '')
-        .replace('undefined', '')
-        .trim();
-      if (!tokenWithoutBearer) {
-        res.locals.prisma = new PrismaClient();
-      } else {
-        const { subdomain } = jwt_decode(tokenWithoutBearer) as DecodedJwt;
-        const databaseOptions = clients.find(
-          (client) => client.subdomain === subdomain,
-        );
-        res.locals.prisma = new PrismaClient({
-          datasources: {
-            db: {
-              url: `postgresql://${databaseOptions.user}:${databaseOptions.password}@${databaseOptions.ip}:${databaseOptions.port}/${databaseOptions.subdomain}?schema=public`,
-            },
-          },
-        });
-        await res.locals.prisma.$connect();
-      }
+    if (url === '/login') {
+      res.locals.prisma = new PrismaClient();
+      next();
     } else {
-      passouPeloElse = true;
-      res.send({
-        type: 'error',
-        message: 'Token inexistente',
-      });
+      const token = req.headers.authorization;
+      if (token) {
+        const tokenWithoutBearer = token
+          .replace('Bearer', '')
+          .replace('undefined', '')
+          .trim();
+        if (!tokenWithoutBearer) {
+          res.locals.prisma = new PrismaClient();
+        } else {
+          const { subdomain } = jwt_decode(tokenWithoutBearer) as DecodedJwt;
+          const databaseOptions = clients.find(
+            (client) => client.subdomain === subdomain,
+          );
+          res.locals.prisma = new PrismaClient({
+            datasources: {
+              db: {
+                url: `postgresql://${databaseOptions.user}:${databaseOptions.password}@${databaseOptions.ip}:${databaseOptions.port}/${databaseOptions.subdomain}?schema=public`,
+              },
+            },
+          });
+          await res.locals.prisma.$connect();
+        }
+      } else {
+        res.send({
+          type: 'error',
+          message: 'Token inexistente',
+        });
+      }
+      next();
     }
-    next();
   } catch (err) {
-    if (!passouPeloElse) {
-      res.send({
-        type: 'error',
-        message: 'Erro ao conectar ao banco de dados',
-      });
-    }
+    res.send({
+      type: 'error',
+      message: 'Erro ao conectar ao banco de dados',
+    });
   }
 }

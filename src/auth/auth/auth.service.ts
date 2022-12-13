@@ -9,12 +9,13 @@ export class AuthService {
 
   async login(username: string, password: string) {
     try {
+      console.log('oie');
       const { data } = await firstValueFrom(
         this.http.post(
           'http://localhost:8000/auth/realms/master/protocol/openid-connect/token',
           new URLSearchParams({
             client_id: 'nest',
-            client_secret: 'y4tWTBy5EXlMyy5xNleRGjLC9FStugTr',
+            client_secret: '7P5jeDYabXPCs72m9TiFhCl8Kj6Ua3jV',
             grant_type: 'password',
             username,
             password,
