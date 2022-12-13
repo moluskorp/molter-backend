@@ -41,6 +41,7 @@ export async function ConnectionMiddleware(
           await res.locals.prisma.$connect();
         }
       } else {
+        res.locals.prisma = new PrismaClient();
         res.send({
           type: 'error',
           message: 'Token inexistente',
