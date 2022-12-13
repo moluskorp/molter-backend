@@ -12,6 +12,7 @@ export async function ConnectionMiddleware(
   res: Response,
   next: NextFunction,
 ) {
+  let passouPeloElse = false;
   try {
     const token = req.headers.authorization;
     if (token) {
@@ -36,17 +37,19 @@ export async function ConnectionMiddleware(
         await res.locals.prisma.$connect();
       }
     } else {
+      passouPeloElse = true;
       res.send({
         type: 'error',
         message: 'Token inexistente',
       });
-      return;
     }
     next();
   } catch (err) {
-    res.send({
-      type: 'error',
-      message: 'Erro ao conectar ao banco de dados',
-    });
+    if (!passouPeloElse) {
+      res.send({
+        type: 'error',
+        message: 'Erro ao conectar ao banco de dados',
+      });
+    }
   }
 }
