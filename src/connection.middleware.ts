@@ -15,6 +15,8 @@ export async function ConnectionMiddleware(
   try {
     const token = req.headers.authorization;
     if (token) {
+      console.log('subdomain', token);
+
       const tokenWithoutBearer = token
         .replace('Bearer', '')
         .replace('undefined', '')

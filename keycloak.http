@@ -2,7 +2,7 @@ POST http://localhost:8000/auth/realms/Molter/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id=Nest
-&client_secret=ovOnhqM0sZ7cjxEnipZPQQfJyMpYMgVK
+&client_secret=y4tWTBy5EXlMyy5xNleRGjLC9FStugTr
 &grant_type=password
 &username=admin
 &password=admin

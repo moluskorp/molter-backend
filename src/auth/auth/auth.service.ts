@@ -14,7 +14,7 @@ export class AuthService {
           'http://localhost:8000/auth/realms/master/protocol/openid-connect/token',
           new URLSearchParams({
             client_id: 'nest',
-            client_secret: '7P5jeDYabXPCs72m9TiFhCl8Kj6Ua3jV',
+            client_secret: 'y4tWTBy5EXlMyy5xNleRGjLC9FStugTr',
             grant_type: 'password',
             username,
             password,
