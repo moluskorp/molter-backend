@@ -15,8 +15,6 @@ export async function ConnectionMiddleware(
   try {
     const token = req.headers.authorization;
     if (token) {
-      console.log('subdomain', token);
-
       const tokenWithoutBearer = token
         .replace('Bearer', '')
         .replace('undefined', '')
@@ -38,13 +36,17 @@ export async function ConnectionMiddleware(
         await res.locals.prisma.$connect();
       }
     } else {
-      res.locals.prisma = new PrismaClient();
+      res.send({
+        type: 'error',
+        message: 'Token inexistente',
+      });
+      return;
     }
     next();
   } catch (err) {
     res.send({
       type: 'error',
-      message: 'Não foi possível conectar ao banco de dados',
+      message: 'Erro ao conectar ao banco de dados',
     });
   }
 }
