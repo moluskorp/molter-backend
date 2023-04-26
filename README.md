@@ -26,6 +26,12 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+API em desenvolvimento
+
+Back-End de ERP , com suporte a Saas
+
+Banco de dados PostgreSQL com Prisma
+
 ## Installation
 
 ```bash
